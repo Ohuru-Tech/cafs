@@ -196,7 +196,7 @@ export function LoginForm() {
       >
         Login
       </LoadingButton>
-      <Copyright />
+      {/* <Copyright /> */}
     </Box>
   );
 }

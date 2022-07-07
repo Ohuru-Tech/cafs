@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 //
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 // material
@@ -21,6 +22,7 @@ import settings2Fill from "@iconify/icons-eva/settings-2-fill";
 // components
 import MenuPopover from "./components/MenuPopover";
 //
+import useUserGlobalStore from "../../users/stores/Global";
 import { successToastConfig } from "../../common/utils/general/configs";
 
 // ----------------------------------------------------------------------
@@ -44,6 +46,8 @@ export default function AccountPopover() {
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const [{ userInfo }, { logout }] = useUserGlobalStore();
+  const { t } = useTranslation("users");
 
   const handleOpen = () => {
     setOpen(true);
@@ -52,7 +56,9 @@ export default function AccountPopover() {
     setOpen(false);
   };
   const handleLogout = async () => {
+    await logout(t);
     toast.success("Logged out", successToastConfig);
+    navigate("/login");
   };
 
   return (

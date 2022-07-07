@@ -58,7 +58,7 @@ export function Register() {
       <MHidden width="mdDown">
         <SectionStyle>
           <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-            Easily deploy, scale and manage your blogs backends with Oblogs
+            Easily upload your files to any cloud provider
           </Typography>
           <img
             alt="register"
@@ -78,11 +78,11 @@ export function Register() {
             </Typography>
           </Box>
 
-          <AuthSocial />
+          {/* <AuthSocial /> */}
 
           <RegisterForm />
 
-          <Typography
+          {/* <Typography
             variant="body2"
             align="center"
             sx={{ color: "text.secondary", mt: 3 }}
@@ -96,7 +96,7 @@ export function Register() {
               Privacy Policy
             </Link>
             .
-          </Typography>
+          </Typography> */}
 
           <MHidden width="smUp">
             <Typography variant="subtitle2" sx={{ mt: 3, textAlign: "center" }}>

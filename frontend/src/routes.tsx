@@ -17,23 +17,12 @@ import { FileUpload } from "apps/exl_frontend/features/FileUpload";
 export default function Routes() {
   return useRoutes([
     {
-      path: "/items",
+      path: "/files",
       element: <RequireAuth redirectTo="/login"><DashboardLayout /></RequireAuth>,
       children: [
-        { path: "all", element: <ItemsList /> },
-        { path: "add", element: <ItemsAdd /> },
-        { path: ":id", element: <ItemDetails /> },
-      ],
+        { path: "upload", element: <FileUpload /> }
+      ]
     },
-    // {
-    //   path: "/files",
-    //   // element: <RequireAuth redirectTo="/xyz"><DashboardLayout /></RequireAuth>,
-    //   element: <DashboardLayout />,
-    //   children: [
-    //     // { path: "all", element: <RequireAuth redirectTo="/xyz"><p>Hello World</p></RequireAuth> },
-    //     { path: "upload", element: <FileUpload /> }
-    //   ]
-    // },
     {
       path: "/",
       element: <LogoOnlyLayout />,
@@ -41,7 +30,7 @@ export default function Routes() {
         { path: "login", element: <Login /> },
         { path: "signup", element: <Register /> },
         { path: "404", element: <Page404 /> },
-        { path: "/", element: <Navigate to="/items/all" /> },
+        { path: "/", element: <Navigate to="/files/upload" /> },
         { path: "*", element: <Navigate to="/404" /> },
       ],
     },
