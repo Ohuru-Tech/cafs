@@ -14,7 +14,9 @@ from django.utils.deconstruct import deconstructible
 from django.utils.encoding import filepath_to_uri
 from django.utils.timezone import is_naive, make_naive
 
-from cloud_agnostic_storage.apps.common.storage_backends.base import CustomBaseStorage
+from cloud_agnostic_storage.apps.common.storage_backends.base import (
+    CustomBaseStorage,
+)
 from cloud_agnostic_storage.apps.common.storage_backends.compress import (
     CompressedFileMixin,
     CompressStorageMixin,
@@ -44,7 +46,9 @@ def _use_cryptography_signer():
     from cryptography.hazmat.backends import default_backend
     from cryptography.hazmat.primitives import hashes
     from cryptography.hazmat.primitives.asymmetric import padding
-    from cryptography.hazmat.primitives.serialization import load_pem_private_key
+    from cryptography.hazmat.primitives.serialization import (
+        load_pem_private_key,
+    )
 
     def _cloud_front_signer_from_pem(key_id, pem):
         if isinstance(pem, str):
