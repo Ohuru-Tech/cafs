@@ -3,7 +3,6 @@ import { Icon } from "@iconify/react";
 import eyeFill from "@iconify/icons-eva/eye-fill";
 import eyeOffFill from "@iconify/icons-eva/eye-off-fill";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 // material
 import {
@@ -24,7 +23,6 @@ import { validate } from "../../common/utils/general/validation";
 export default function RegisterForm() {
   // load CSS, snackbar and translation
   const navigate = useNavigate();
-  const { t } = useTranslation("users");
 
   // Get the required store functions
   // eslint-disable-next-line no-empty-pattern
@@ -111,7 +109,7 @@ export default function RegisterForm() {
   const onRegisterClicked = async () => {
     if (canSave) {
       setLoading(true);
-      let status = await register(formData, t);
+      let status = await register(formData);
       if (status) {
         navigate("/login");
       }
