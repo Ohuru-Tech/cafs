@@ -27,24 +27,24 @@ class GCloudConnection(models.Model):
 
 
 class CloudConnection(models.Model):
-    user = models.ForeignKey(
-        to=User, on_delete=models.CASCADE, related_name="connections"
+    user = models.OneToOneField(
+        to=User, on_delete=models.CASCADE, related_name="connection"
     )
-    s3_connection = models.ForeignKey(
+    s3_connection = models.OneToOneField(
         to=S3Connection,
         on_delete=models.CASCADE,
         related_name="connection",
         blank=True,
         null=True,
     )
-    azure_connection = models.ForeignKey(
+    azure_connection = models.OneToOneField(
         to=AzureConnection,
         on_delete=models.CASCADE,
         related_name="connection",
         blank=True,
         null=True,
     )
-    gcp_connection = models.ForeignKey(
+    gcp_connection = models.OneToOneField(
         to=GCloudConnection,
         on_delete=models.CASCADE,
         related_name="connection",
