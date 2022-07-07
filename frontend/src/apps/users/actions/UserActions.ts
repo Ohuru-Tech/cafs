@@ -7,7 +7,7 @@ import { UserState } from "../models/state";
 import UserAPIs from "../utils/userApi";
 
 export const login =
-  (credentials: UserCredentials, t: any): Action<UserState> =>
+  (credentials: UserCredentials): Action<UserState> =>
   async ({ setState }) => {
     try {
       const { data: userInfo, status } = await UserAPIs().login(credentials);
@@ -26,16 +26,19 @@ export const login =
         );
       }
     } catch {
-      toast.error(t("alerts.loginError"), errorToastConfig);
+      toast.error(
+        "Unable to login with the provided credentials",
+        errorToastConfig
+      );
     }
   };
 
-export const register = (signupData: SignupData, t: any) => async () => {
+export const register = (signupData: SignupData) => async () => {
   try {
     await UserAPIs().register(signupData);
     return true;
   } catch {
-    toast.error(t("alerts.signupError"));
+    toast.error("Could not sign up");
   }
 };
 
