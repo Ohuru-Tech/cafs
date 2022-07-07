@@ -4,7 +4,6 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 // Material UI
@@ -44,10 +43,9 @@ function Copyright() {
 }
 
 export function LoginForm() {
-  // Load CSS, translation, snackbar
+  // Load CSSranslation, snackbar
   const navigate = useNavigate();
   let [params] = useSearchParams();
-  const { t } = useTranslation("users");
 
   // Get the required store functions
   const [{ loggedIn, userInfo }, { login }] = useGlobalStore();
@@ -114,7 +112,6 @@ export function LoginForm() {
       }
       navigate("/");
     }
-    
   }, [loggedIn]);
 
   // Handle form submit
@@ -122,7 +119,7 @@ export function LoginForm() {
     if (canSave) {
       try {
         setLoading(true);
-        await login(formData, t);
+        await login(formData);
       } finally {
         setLoading(false);
       }
