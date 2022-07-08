@@ -25,6 +25,9 @@ class GCloudConnection(models.Model):
     bucket_name = models.CharField(max_length=255)
     connection_json = models.JSONField()
 
+    def __str__(self) -> str:
+        return f"{self.bucket_name}"
+
 
 class CloudConnection(models.Model):
     user = models.OneToOneField(

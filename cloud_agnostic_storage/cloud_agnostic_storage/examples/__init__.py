@@ -20,6 +20,13 @@ from cloud_agnostic_storage.examples.auth_responses import (
     user_registration_201_example,
     user_registration_400_example,
 )
+from cloud_agnostic_storage.examples.connection_responses import (
+    connection_response,
+)
+from cloud_agnostic_storage.examples.files_responses import (
+    file_read_200_example,
+    files_list_get_200_example,
+)
 from cloud_agnostic_storage.examples.user_requests import profile_update_curl
 from cloud_agnostic_storage.examples.user_responses import (
     profile_update_200_example,

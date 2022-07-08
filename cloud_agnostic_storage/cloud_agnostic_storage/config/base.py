@@ -131,6 +131,8 @@ class Common(Configuration):
     USE_TZ = True
 
     # Storage configs
+    # Default to normal thing
+    DEFAULT_TO_ENV_CONFIGS = env.bool("DEFAULT_TO_ENV_CONFIGS", False)
     # AWS
     AWS_S3_ACCESS_KEY_ID = env.str("DEFAULT_AWS_S3_ACCESS_KEY_ID", "some_id")
     AWS_S3_SECRET_ACCESS_KEY = env.str(
