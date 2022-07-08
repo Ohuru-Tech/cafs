@@ -1,4 +1,5 @@
 from django.db import models
+from google.oauth2 import service_account
 
 from cloud_agnostic_storage.apps.accounts.models import User
 from cloud_agnostic_storage.apps.common.storage_backends.connectors.azure import (
@@ -12,6 +13,7 @@ from cloud_agnostic_storage.apps.common.storage_backends.connectors.s3 import (
 )
 from cloud_agnostic_storage.apps.storages.models.connection import (
     AzureConnection,
+    GCloudConnection,
     S3Connection,
 )
 
@@ -31,6 +33,7 @@ class File(models.Model):
     file_azure = models.FileField(storage=AzureStorage, blank=True, null=True)
     # file on aws
     file_s3 = models.FileField(storage=S3Boto3Storage, blank=True, null=True)
+    access_url = models.URLField(blank=True, null=True)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
@@ -42,7 +45,8 @@ class File(models.Model):
                     secret_key=aws_connection_details.secret_key,
                     bucket_name=aws_connection_details.bucket_name,
                 )
-            except S3Connection.DoesNotExist:
+                self.access_url = self.file_s3.url
+            except (S3Connection.DoesNotExist, AttributeError):
                 pass
         if self.file_azure:
             try:
@@ -54,6 +58,19 @@ class File(models.Model):
                     account_key=azure_connection_details.account_key,
                     azure_container=azure_connection_details.container_name,
                 )
-            except AzureConnection.DoesNotExist:
+                self.access_url = self.file_azure.url
+            except (AzureConnection.DoesNotExist, AttributeError):
+                pass
+        if self.file_gcloud:
+            try:
+                gcloud_connection_details = self.user.gcp_connection
+                self.file_gcloud.storage = GCloudConnection(
+                    bucket_name=gcloud_connection_details.bucket_name,
+                    credentials=service_account.Credentials.from_service_account_info(
+                        gcloud_connection_details.connection_json
+                    ),
+                )
+                self.access_url = self.file_gcloud.url
+            except (GCloudConnection.DoesNotExist, AttributeError):
                 pass
         return super().save(*args, **kwargs)

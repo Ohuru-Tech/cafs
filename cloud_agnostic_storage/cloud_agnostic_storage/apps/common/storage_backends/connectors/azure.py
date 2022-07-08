@@ -16,7 +16,9 @@ from azure.storage.blob import (
     generate_blob_sas,
 )
 
-from cloud_agnostic_storage.apps.common.storage_backends.base import CustomBaseStorage
+from cloud_agnostic_storage.apps.common.storage_backends.base import (
+    CustomBaseStorage,
+)
 from cloud_agnostic_storage.apps.common.storage_backends.utils import (
     clean_name,
     get_available_overwrite_name,
@@ -323,6 +325,7 @@ class AzureStorage(CustomBaseStorage):
             credential = sas_token
 
         container_blob_url = self.client.get_blob_client(name).url
+
         return BlobClient.from_blob_url(
             container_blob_url, credential=credential
         ).url
