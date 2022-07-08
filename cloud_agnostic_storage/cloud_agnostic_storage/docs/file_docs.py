@@ -112,7 +112,6 @@ that page using `page_size` query parameter
         "operation_id": "Files List",
         "operation_description": desc,
         "responses": responses,
-        "security": [],
     }
 
 
@@ -133,5 +132,4 @@ as a `URL` param.
         "operation_id": "Files Retrieve",
         "operation_description": desc,
         "responses": responses,
-        "security": [],
     }

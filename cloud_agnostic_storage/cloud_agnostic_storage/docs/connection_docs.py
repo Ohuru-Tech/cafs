@@ -87,5 +87,4 @@ The Connection Retrieve API is used to get a particular connection by id
         "operation_id": "Connection Retrieve",
         "operation_description": desc,
         "responses": responses,
-        "security": [],
     }

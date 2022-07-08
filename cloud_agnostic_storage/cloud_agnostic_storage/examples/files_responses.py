@@ -1,5 +1,5 @@
 files_list_get_200_example = {
-    "count": 7,
+    "count": 2,
     "next": None,
     "previous": None,
     "results": [
