@@ -73,7 +73,11 @@ The validations are same as in the create call.
 
 class ConnectionRetrieve:
     desc = f"""
-The Connection Retrieve API is used to get a particular connection by id
+The Connection Retrieve API is used to get a particular connection.
+
+Note: Although `id` is a required field, it is not necessary to pass the 
+correct `id` in the URL parameter as long as you have the correct bearer token in 
+the auth headers.
 """  # noqa
 
     responses = {

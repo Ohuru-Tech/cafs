@@ -1,13 +1,14 @@
+from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from drf_psq import PsqMixin, Rule
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.exceptions import NotAuthenticated
 from rest_framework.mixins import (
     CreateModelMixin,
     DestroyModelMixin,
     RetrieveModelMixin,
     UpdateModelMixin,
 )
-from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
 
@@ -50,6 +51,12 @@ class ConnectionViewSet(
         "partial_update": [Rule([IsAuthenticated], CloudConnectionSerializer)],
         "destroy": [Rule([IsAuthenticated], CloudConnectionSerializer)],
     }
+
+    def get_object(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return get_object_or_404(CloudConnection, user=self.request.user)
+        else:
+            raise NotAuthenticated
 
     def get_queryset(self):
         return CloudConnection.objects.all()
