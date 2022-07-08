@@ -10,28 +10,9 @@ const getIcon = (name: IconifyIcon) => (
 
 const sidebarConfig = [
   {
-    title: "items",
-    path: "/items",
-    children: [
-      {
-        title: "All Items",
-        path: "/items/all",
-      },
-      {
-        title: "Add items",
-        path: "/items/add",
-      },
-    ],
-    icon: getIcon(layersFill),
-  },
-  {
     title: "Files",
     path: "/files",
     children: [
-      // {
-      //   title: "View all files",
-      //   path: "/files/all",
-      // },
       {
         title: "Upload File",
         path: "/files/upload",
