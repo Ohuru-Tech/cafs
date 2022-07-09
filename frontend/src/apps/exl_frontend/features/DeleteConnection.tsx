@@ -39,7 +39,7 @@ export function DeleteConnection() {
                 <Grid container spacing={3} justifyContent="center">
                     <Grid item xs={12} sm={10} md={10}>
                         <Box sx={{ pt: 2 }}>
-                            <Button variant="text" component={RouterLink} to="/items/all">
+                            <Button variant="text" component={RouterLink} to="/connections/new">
                                 <Icon icon={arrowFill} color="#46C084" height={30} />
                                 Back to Connections
                             </Button>
@@ -71,6 +71,7 @@ export function DeleteConnection() {
                                             setLoading(true);
                                             let x = await deleteConnection(connId as unknown as number);
                                             setLoading(false);
+                                            navigate('/connections/new')
                                         }}
                                     >
                                         {loading ? <CircularProgress /> : "Delete"}

@@ -62,7 +62,7 @@ export function Register() {
           </Typography>
           <img
             alt="register"
-            src="/static/illustrations/illustration_register.png"
+            src="/create.png"
           />
         </SectionStyle>
       </MHidden>
@@ -71,10 +71,10 @@ export function Register() {
         <ContentStyle>
           <Box sx={{ mb: 5 }}>
             <Typography variant="h4" gutterBottom>
-              Get started absolutely free.
+              Cloud-agnostic solution
             </Typography>
             <Typography sx={{ color: "text.secondary" }}>
-              Free forever. No credit card needed.
+              Supports AWS, Azure, S3 with simultaneous requests
             </Typography>
           </Box>
 

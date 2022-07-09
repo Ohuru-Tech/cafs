@@ -35,6 +35,7 @@ export function ListFiles() {
             getAllFiles();
             // getAllItems();
         }, []);
+        console.log('files are');
         console.log(files);
         return (
         <Page title="All Files">
@@ -52,11 +53,11 @@ export function ListFiles() {
                             }}
                         >
                             <Typography variant="h4">
-                                {loading ? <Skeleton height={60} /> : "Items"}
+                                {loading ? <Skeleton height={60} /> : "Files"}
                             </Typography>
                             <IconButton
                                 onClick={() => {
-                                    navigate("/items/add");
+                                    navigate("/files/upload");
                                 }}
                             >
                                 <Icon icon={addIcon} color="#46C084" height={30} />

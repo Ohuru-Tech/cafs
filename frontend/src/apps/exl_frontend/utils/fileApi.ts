@@ -29,8 +29,8 @@ const FileAPIs = (itemId?: number) => {
       axios.get(`v1/${FILE_API_BASE}/`, { authenticated: true }),
 
     deleteFile: (fileId: number) =>
-      axios.get(
-        `v1/${FILE_API_BASE}/${fileId}`,
+      axios.delete(
+        `v1/${FILE_API_BASE}/${fileId}/`,
         authenticatedSnakeAndCamelCase
       )
   };

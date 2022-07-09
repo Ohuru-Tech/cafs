@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 // material
-import { Card, CardHeader, Box, Stack, CardActionArea, Typography } from "@mui/material";
+import { Card, CardHeader, Box, Stack, CardActionArea, Typography, Button } from "@mui/material";
 import { File } from "apps/exl_frontend/models/file";
 // ----------------------------------------------------------------------
+import useFileStore from "apps/exl_frontend/stores/fileStore";
 
 interface FileListItemProps {
     file: File;
@@ -13,20 +14,30 @@ function getFileLink(file: File) {
     return file.file_azure || file.file_s3 || file.file_gcloud || file.file;
 }
 
+function getFileName(path: string) {
+    if (!path)
+        return;
+    return path.substring(path.lastIndexOf("/") + 1, (path.indexOf("?", 1) !== -1 ? path.indexOf("?", 1) : path.length));
+}
+
 export default function ApplicationListItem({ file }: FileListItemProps) {
+    const [{ }, { deleteFile, fetchAllFiles }] = useFileStore();
     const navigate = useNavigate();
     return (
         <Card sx={{ p: 1, mb: 2, mt: 2 }}>
 
             <CardActionArea
-                onClick={() => {
-                    // navigate(`/items/${item?.id}`);
-                    window.open(getFileLink(file));
-                }}
+                onClick={() => window.open(getFileLink(file))}
             >
-                <CardHeader title={`file: ${file.id} user:${file.user}`} sx={{ color: "#46C084" }} />
+                <CardHeader title={decodeURI(getFileName(file.file_azure || file.file_s3 || file.file_gcloud || file.file) || ' ')} sx={{ color: "#46C084" }} />
             </CardActionArea>
-            
+            <Button variant="contained" component="span"
+                onClick={async () => {
+                    console.log(file.id);
+                    await deleteFile(file.id)
+                    fetchAllFiles();
+                }}
+            >Delete</Button>
         </Card>
     );
 }
