@@ -202,16 +202,18 @@ export function NewConnection() {
                                                 },
                                                 data: conn
                                             };
-                                            // try {
-                                            let data = await axios(config)
-                                            // }
-                                            // catch (e) {
-                                            // console.log(e);
-                                            toast.error('Connection already exists', errorToastConfig)
-                                            // }
-                                            // finally {
-                                            setLoading(false);
-                                            // }
+                                            try {
+                                                let data = await axios(config)
+                                                toast.success('Connection created successfully', successToastConfig)
+
+                                            }
+                                            catch (e) {
+                                                console.log(e);
+                                                toast.error('Connection already exists', errorToastConfig)
+                                            }
+                                            finally {
+                                                setLoading(false);
+                                            }
                                             // navigate("/items/all");
                                         }}
                                     >

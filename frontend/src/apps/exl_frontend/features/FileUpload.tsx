@@ -40,10 +40,11 @@ function getUploadType(bucketType: string) {
 export function FileUpload() {
     const navigate = useNavigate();
 
-    const [{ }, {  }] = useFileStore();
+    const [{ }, { }] = useFileStore();
     const [selectedFile, setSelectedFile] = useState<File>();
     const [loading, setLoading] = useState(false);
     const [bucketType, setBucketType] = useState('Local');
+    const [fileUploadLink, setFileUploadLink] = useState<any>({});
 
     return (
         <Page title="Item Details">
@@ -109,13 +110,21 @@ export function FileUpload() {
                                             };
                                             axios(config)
                                                 .then(function (response) {
-                                                    console.log(JSON.stringify(response.data));
+                                                    // console.log(JSON.stringify(response.data));
+                                                    setFileUploadLink(response.data)
                                                 })
                                                 .catch(function (error) {
                                                     console.log(error);
                                                 });
                                         }}
                                     >Upload</Button>
+                                    {fileUploadLink.id && <Button
+                                        sx={{ p: 1, m: 1 }}
+                                        variant="contained"
+                                        onClick={() => window.open(fileUploadLink.file || fileUploadLink.file_s3 || fileUploadLink.file_azure || fileUploadLink.file_gcloud)}
+                                        component="label">Open File</Button>}
+
+
                                 </CardContent>
                             </Card>
                         )}

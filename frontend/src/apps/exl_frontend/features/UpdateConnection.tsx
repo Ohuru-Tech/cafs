@@ -16,24 +16,27 @@ import { Container } from "@mui/system";
 import { authHeaders } from "apps/common/utils//axios/authHeader";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 // import NewFormData from 'form-data'
-import axios from 'axios';
+// import axios from 'axios';
 //
 import { Icon } from "@iconify/react";
 import arrowFill from "@iconify/icons-eva/arrow-back-fill";
 //
 import Page from "apps/common/components/Page";
 import useItemStore from "apps/exl_frontend/stores/itemsStore";
+import { toast } from "react-toastify";
+import { successToastConfig, errorToastConfig } from "../../common/utils/general/configs";
+import axios from 'apps/common/utils/axios/defaults'
 
-function getUploadType(bucketType: string) {
-    switch (bucketType) {
-        case 'AWS':
-            return '_s3';
-        case 'Azure':
-            return '_azure';
-        case 'GCP':
-            return '_gcloud';
-        default:
-            return '';
+interface iConn {
+    azure_connection: {
+        account_name: string;
+        account_key: string;
+        container_name: string;
+    },
+    s3_connection: {
+        bucket_name: string;
+        access_key: string;
+        secret_key: string;
     }
 }
 
@@ -41,13 +44,21 @@ export function UpdateConnection() {
     const navigate = useNavigate();
 
     const [_, { addItem }] = useItemStore();
-    const [selectedFile, setSelectedFile] = useState<File>();
     const [loading, setLoading] = useState(false);
-    const [bucketType, setBucketType] = useState('Local');
     const [itemName, setItemName] = useState("");
-    const [itemDescription, setItemDescription] = useState("");
-    let fileData;
-
+    const [connId, setConnId] = useState("");
+    const [conn, setConn] = useState<iConn>({
+        azure_connection: {
+            account_name: '',
+            account_key: '',
+            container_name: '',
+        },
+        s3_connection: {
+            bucket_name: '',
+            access_key: '',
+            secret_key: '',
+        }
+    });
     return (
         <Page title="Item Details">
             <Container maxWidth="xl">
@@ -69,6 +80,94 @@ export function UpdateConnection() {
                         ) : (
                             <Card>
                                 <CardContent>
+
+                                    <TextField
+                                        sx={{ p: 1, m: 1 }}
+                                        id="item-name"
+                                        label="Connection ID"
+                                        value={connId}
+                                        fullWidth
+                                        variant="outlined"
+                                        onChange={(e) => setConnId(e.target.value)} />
+                                    <Typography variant="h5">Azure</Typography>
+
+                                    <TextField
+                                        sx={{ p: 1, m: 1 }}
+                                        id="item-name"
+                                        label="Account Name"
+                                        value={conn.azure_connection.account_name}
+                                        fullWidth
+                                        variant="outlined"
+                                        onChange={(e) => {
+                                            let tempConn = { ...conn };
+                                            tempConn.azure_connection.account_name = e.target.value;
+                                            setConn(tempConn);
+                                        }}
+                                    /> <TextField
+                                        sx={{ p: 1, m: 1 }}
+                                        id="item-name"
+                                        label="Account Key"
+                                        value={conn.azure_connection.account_key}
+                                        fullWidth
+                                        variant="outlined"
+                                        onChange={(e) => {
+                                            let tempConn = { ...conn };
+                                            tempConn.azure_connection.account_key = e.target.value;
+                                            setConn(tempConn);
+                                        }}
+                                    /> <TextField
+                                        sx={{ p: 1, m: 1 }}
+                                        id="item-name"
+                                        label="Container Name"
+                                        value={conn.azure_connection.container_name}
+                                        fullWidth
+                                        variant="outlined"
+                                        onChange={(e) => {
+                                            let tempConn = { ...conn };
+                                            tempConn.azure_connection.container_name = e.target.value;
+                                            setConn(tempConn);
+                                        }}
+                                    />
+                                    <Typography variant="h5">AWS</Typography>
+
+                                    <TextField
+                                        sx={{ p: 1, m: 1 }}
+                                        id="item-name"
+                                        label="Bucket Name"
+                                        value={conn.s3_connection.bucket_name}
+                                        fullWidth
+                                        variant="outlined"
+                                        onChange={(e) => {
+                                            let tempConn = { ...conn };
+                                            tempConn.s3_connection.bucket_name = e.target.value;
+                                            setConn(tempConn);
+                                        }}
+                                    /> <TextField
+                                        sx={{ p: 1, m: 1 }}
+                                        id="item-name"
+                                        label="Secret Key"
+                                        value={conn.s3_connection.secret_key}
+                                        fullWidth
+                                        variant="outlined"
+                                        onChange={(e) => {
+                                            let tempConn = { ...conn };
+                                            tempConn.s3_connection.secret_key = e.target.value;
+                                            setConn(tempConn);
+                                        }}
+                                    /> <TextField
+                                        sx={{ p: 1, m: 1 }}
+                                        id="item-name"
+                                        label="Access Key"
+                                        value={conn.s3_connection.access_key}
+                                        fullWidth
+                                        variant="outlined"
+                                        onChange={(e) => {
+                                            let tempConn = { ...conn };
+                                            tempConn.s3_connection.access_key = e.target.value;
+                                            setConn(tempConn);
+                                        }}
+                                    />
+                                    <Typography variant="h5">GCP</Typography>
                                     <TextField
                                         sx={{ p: 1, m: 1 }}
                                         id="item-name"
@@ -77,84 +176,54 @@ export function UpdateConnection() {
                                         fullWidth
                                         variant="outlined"
                                         onChange={(e) => setItemName(e.target.value)}
-                                    />
-                                    <TextField
+                                    /> <TextField
                                         sx={{ p: 1, m: 1 }}
-                                        id="item-description"
-                                        label="Item Description"
-                                        value={itemDescription}
-                                        multiline
-                                        rows={4}
+                                        id="item-name"
+                                        label="Item Name"
+                                        value={itemName}
                                         fullWidth
                                         variant="outlined"
-                                        onChange={(e) => setItemDescription(e.target.value)}
+                                        onChange={(e) => setItemName(e.target.value)}
+                                    /> <TextField
+                                        sx={{ p: 1, m: 1 }}
+                                        id="item-name"
+                                        label="Item Name"
+                                        value={itemName}
+                                        fullWidth
+                                        variant="outlined"
+                                        onChange={(e) => setItemName(e.target.value)}
                                     />
+
                                     <Button
-                                        variant="contained"
-                                        component="label"
-                                    >
-                                        Select File
-                                        <input type="file" hidden
-                                            onChange={(event) => setSelectedFile(event.target.files![0])}
-                                        />
-                                    </Button>
-                                    <Typography sx={{ p: 1, m: 1 }} variant="subtitle1" component='span'>{selectedFile?.name}</Typography>
-                                    <br />
-                                    <br />
-                                    <Select
-                                        value={bucketType}
-                                        onChange={(e) => setBucketType(e.target.value)}
-                                        label="Bucket Type"
-                                    >
-                                        <MenuItem value="Local">
-                                            Local
-                                        </MenuItem>
-                                        <MenuItem value={'AWS'}>AWS</MenuItem>
-                                        <MenuItem value={'Azure'}>Azure</MenuItem>
-                                    </Select>
-                                    <Button
-                                        variant="contained"
-                                        component="label"
-                                        onClick={() => {
-
-                                            const myFormData = new FormData();
-                                            myFormData.append(`file${getUploadType(bucketType)}`, selectedFile as Blob, selectedFile!.name)
-
-                                            var config = {
-                                                method: 'post',
-                                                url: 'http://localhost:8000/api/v1/files/',
-                                                headers: {
-                                                    'Authorization': authHeaders(),
-
-                                                    'Content-Type': 'multipart/form-data'
-                                                },
-                                                data: myFormData
-                                            };
-                                            axios(config)
-                                                .then(function (response) {
-                                                    console.log(JSON.stringify(response.data));
-                                                })
-                                                .catch(function (error) {
-                                                    console.log(error);
-                                                });
-
-                                        }}
-                                    >Upload</Button>
-                                    {/* <Button
                                         sx={{ p: 1, m: 1, ml: 2 }}
                                         variant="contained"
                                         onClick={async () => {
                                             setLoading(true);
-                                            await addItem({
-                                                name: itemName,
-                                                description: itemDescription,
-                                            });
-                                            setLoading(false);
-                                            navigate("/items/all");
+                                            var config = {
+                                                method: 'patch',
+                                                url: `http://localhost:8000/api/v1/connections/${connId}/`,
+                                                headers: {
+                                                    'Authorization': authHeaders(),
+                                                    'Content-Type': 'application/json'
+                                                },
+                                                data: conn
+                                            };
+                                            try {
+                                                let data = await axios(config)
+                                                toast.success('Successfully updated connection', successToastConfig)
+                                            }
+                                            catch (e) {
+                                                console.log(e);
+                                                toast.error('Error while updating connection', errorToastConfig)
+                                            }
+                                            finally {
+                                                setLoading(false);
+                                            }
+                                            // navigate("/items/all");
                                         }}
                                     >
                                         {loading ? <CircularProgress /> : "Save"}
-                                    </Button> */}
+                                    </Button>
                                 </CardContent>
                             </Card>
                         )}
