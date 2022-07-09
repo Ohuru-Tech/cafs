@@ -25,9 +25,7 @@ class Prod(Common):
 
     # Mail
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_PORT = env.str(
-        "CLOUD_AGNOSTIC_STORAGE_EMAIL_PORT", default="1025"
-    )
+    EMAIL_PORT = env.str("CLOUD_AGNOSTIC_STORAGE_EMAIL_PORT", default="1025")
     EMAIL_HOST = env.str(
         "CLOUD_AGNOSTIC_STORAGE_EMAIL_HOST",
         default="127.0.0.1",

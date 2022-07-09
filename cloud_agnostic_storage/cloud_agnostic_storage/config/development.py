@@ -13,9 +13,7 @@ class Dev(Common):
     )
 
     # Add only dev based middleware here
-    MIDDLEWARE += env.list(
-        "CLOUD_AGNOSTIC_STORAGE_DEV_MIDDLEWARE", default=[]
-    )
+    MIDDLEWARE += env.list("CLOUD_AGNOSTIC_STORAGE_DEV_MIDDLEWARE", default=[])
 
     # Keep debug true in development
     DEBUG = True
