@@ -14,7 +14,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from cloud_agnostic_storage.apps.common.pagination import DynamicPageSizePagination
+from cloud_agnostic_storage.apps.common.pagination import (
+    DynamicPageSizePagination,
+)
 from cloud_agnostic_storage.apps.storages.models import File
 from cloud_agnostic_storage.apps.storages.serializers import FileSerializer
 from cloud_agnostic_storage.apps.storages.serializers.file_serializers import (
@@ -29,7 +31,9 @@ from cloud_agnostic_storage.docs.file_docs import (
 
 
 @method_decorator(swagger_auto_schema(**FilesList.swagger_setup), "list")
-@method_decorator(swagger_auto_schema(**FilesRetrieve.swagger_setup), "retrieve")
+@method_decorator(
+    swagger_auto_schema(**FilesRetrieve.swagger_setup), "retrieve"
+)
 @method_decorator(swagger_auto_schema(**FileCreate.swagger_setup), "create")
 @method_decorator(
     swagger_auto_schema(**FileUpdate.swagger_setup), "partial_update"
