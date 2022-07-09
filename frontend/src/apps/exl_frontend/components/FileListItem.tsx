@@ -30,7 +30,7 @@ export default function ApplicationListItem({ file }: FileListItemProps) {
                 <CardActionArea
                     onClick={() => window.open(getFileLink(file))}
                 >
-                    <CardHeader title={decodeURI(getFileName(file.file_azure || file.file_s3 || file.file_gcloud || file.file) || ' ')} sx={{ color: "#46C084" }} />
+                    <CardHeader title={decodeURI(getFileName(file.file_azure || file.file_s3 || file.file_gcloud || file.file) || ' ')} />
                 </CardActionArea>
                 <Button variant="contained" component="span"
                     

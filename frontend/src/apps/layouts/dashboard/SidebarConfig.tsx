@@ -31,10 +31,10 @@ const sidebarConfig: iSidebarConfig[] = [
         title: "Update connection",
         path: "/connections/update"
       },
-      {
-        title: "Delete connection",
-        path: "/connections/delete"
-      }
+      // {
+      //   title: "Delete connection",
+      //   path: "/connections/delete"
+      // }
     ],
     icon: getIcon(layersFill),
 
