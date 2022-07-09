@@ -5,7 +5,7 @@ import { Card, CardHeader, Box, Stack, CardActionArea, Typography, Button } from
 import { File } from "apps/exl_frontend/models/file";
 // ----------------------------------------------------------------------
 import useFileStore from "apps/exl_frontend/stores/fileStore";
-
+import DeleteIcon from '@mui/icons-material/Delete';
 interface FileListItemProps {
     file: File;
 }
@@ -26,18 +26,24 @@ export default function ApplicationListItem({ file }: FileListItemProps) {
     return (
         <Card sx={{ p: 1, mb: 2, mt: 2 }}>
 
-            <CardActionArea
-                onClick={() => window.open(getFileLink(file))}
-            >
-                <CardHeader title={decodeURI(getFileName(file.file_azure || file.file_s3 || file.file_gcloud || file.file) || ' ')} sx={{ color: "#46C084" }} />
-            </CardActionArea>
-            <Button variant="contained" component="span"
-                onClick={async () => {
-                    console.log(file.id);
-                    await deleteFile(file.id)
-                    fetchAllFiles();
-                }}
-            >Delete</Button>
+            <Stack direction="row" spacing={2}>
+                <CardActionArea
+                    onClick={() => window.open(getFileLink(file))}
+                >
+                    <CardHeader title={decodeURI(getFileName(file.file_azure || file.file_s3 || file.file_gcloud || file.file) || ' ')} sx={{ color: "#46C084" }} />
+                </CardActionArea>
+                <Button variant="contained" component="span"
+                    
+                    startIcon={<DeleteIcon />}
+                    onClick={async () => {
+                        console.log(file.id);
+                        await deleteFile(file.id)
+                        fetchAllFiles();
+                    }}
+                >Delete</Button>
+            </Stack>
+
+
         </Card>
     );
 }

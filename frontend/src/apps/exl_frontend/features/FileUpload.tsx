@@ -80,6 +80,7 @@ export function FileUpload() {
                                     <br />
                                     <br />
                                     <Select
+                                        fullWidth
                                         value={bucketType}
                                         onChange={(e) => setBucketType(e.target.value)}
                                         label="Bucket Type"
@@ -89,9 +90,10 @@ export function FileUpload() {
                                         </MenuItem>
                                         <MenuItem value={'AWS'}>AWS</MenuItem>
                                         <MenuItem value={'Azure'}>Azure</MenuItem>
+                                        <MenuItem value={'GCP'}>GCP</MenuItem>
                                     </Select>
                                     <Button
-                                        sx={{ p: 1, ml: 1, mb: 3 }}
+                                        sx={{ p: 1, mt: 2 }}
                                         variant="contained"
                                         component="label"
                                         onClick={async () => {
@@ -120,7 +122,7 @@ export function FileUpload() {
                                         }}
                                     >Upload</Button>
                                     {fileUploadLink.id && <Button
-                                        sx={{ p: 1, m: 1 }}
+                                        sx={{ p: 1, mt: 2, ml: 1 }}
                                         variant="contained"
                                         onClick={() => window.open(fileUploadLink.file || fileUploadLink.file_s3 || fileUploadLink.file_azure || fileUploadLink.file_gcloud)}
                                         component="label">Open File</Button>}
