@@ -3,10 +3,7 @@ import { toast } from "react-toastify";
 //
 import ItemAPIs from "apps/exl_frontend/utils/itemApi";
 import { itemState } from "apps/exl_frontend/models/state";
-import {
-  ItemCreate,
-  ItemEdit,
-} from "apps/exl_frontend/models/api";
+import { ItemCreate, ItemEdit } from "apps/exl_frontend/models/api";
 import { successToastConfig } from "apps/common/utils/general/configs";
 
 // -----------------------------------------------------------------
