@@ -83,11 +83,12 @@ export function NewConnection() {
 
         setLoading(true);
         let conn = await axios(config);
-        if (!(conn.data.azure_connection && conn.data.s3_connection)) {
+        if ((conn.data.azure_connection && conn.data.s3_connection)) {
+            console.log(conn.data.azure_connection)
             setConnExists(true);
         }
         console.log(conn.data);
-        setConn(conn.data);
+        // setConn(conn.data);
         setLoading(false);
     }
 

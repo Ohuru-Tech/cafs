@@ -23,10 +23,10 @@ const sidebarConfig: iSidebarConfig[] = [
         title: "New connection",
         path: "/connections/new"
       },
-      {
-        title: "Get connection",
-        path: "/connections/get"
-      },
+      // {
+      //   title: "Get connection",
+      //   path: "/connections/get"
+      // },
       {
         title: "Update connection",
         path: "/connections/update"
