@@ -40,7 +40,7 @@ export function DeleteFile() {
                 <Grid container spacing={3} justifyContent="center">
                     <Grid item xs={12} sm={10} md={10}>
                         <Box sx={{ pt: 2 }}>
-                            <Button variant="text" component={RouterLink} to="/items/all">
+                            <Button variant="text" component={RouterLink} to="/files/upload">
                                 <Icon icon={arrowFill} color="#46C084" height={30} />
                                 Back to Files
                             </Button>

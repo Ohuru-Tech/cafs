@@ -51,10 +51,7 @@ const sidebarConfig: iSidebarConfig[] = [
         title: "List Files",
         path: "/files/all"
       },
-      {
-        title: "Delete File",
-        path: "/files/delete"
-      }
+
     ],
     icon: getIcon(layersFill),
   },

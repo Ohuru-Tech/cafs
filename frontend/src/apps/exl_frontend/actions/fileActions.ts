@@ -26,7 +26,7 @@ export const deleteFile =
   (fileId: number): Action<fileState> =>
   async ({ setState }) => {
     const { data: files, status } = await FileAPIs().deleteFile(fileId);
-    if (status === 200) {
+    if (status === 204) {
       toast("Successfully deleted", successToastConfig);
     } else {
       toast("Error while deleting", errorToastConfig);

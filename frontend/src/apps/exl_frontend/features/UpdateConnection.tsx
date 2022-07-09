@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Box,
     Button,
@@ -37,7 +37,11 @@ interface iConn {
         bucket_name: string;
         access_key: string;
         secret_key: string;
-    }
+    },
+    gcp_connection: {
+        bucket_name: string;
+        connection_json: string;
+    };
 }
 
 export function UpdateConnection() {
@@ -46,7 +50,6 @@ export function UpdateConnection() {
     const [_, { addItem }] = useItemStore();
     const [loading, setLoading] = useState(false);
     const [itemName, setItemName] = useState("");
-    const [connId, setConnId] = useState("");
     const [conn, setConn] = useState<iConn>({
         azure_connection: {
             account_name: '',
@@ -57,15 +60,46 @@ export function UpdateConnection() {
             bucket_name: '',
             access_key: '',
             secret_key: '',
+        },
+        gcp_connection: {
+            bucket_name: '',
+            connection_json: ''
         }
     });
+
+    const getDefaultConnection = async () => {
+        const config = {
+            method: 'get',
+            url: 'http://localhost:8000/api/v1/connections/1',
+            headers: {
+                'Authorization': authHeaders(),
+            }
+        };
+
+        setLoading(true);
+        let conn = await axios(config);
+        if (!conn.data.gcp_connection) {
+            conn.data.gcp_connection = {
+                bucket_name: '',
+                connection_json: ''
+            }
+        }
+        console.log(conn.data);
+        setConn(conn.data);
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        getDefaultConnection();
+    }, [])
+
     return (
         <Page title="Item Details">
             <Container maxWidth="xl">
                 <Grid container spacing={3} justifyContent="center">
                     <Grid item xs={12} sm={10} md={10}>
                         <Box sx={{ pt: 2 }}>
-                            <Button variant="text" component={RouterLink} to="/items/all">
+                            <Button variant="text" component={RouterLink} to="/connections/new">
                                 <Icon icon={arrowFill} color="#46C084" height={30} />
                                 Back to Connections
                             </Button>
@@ -81,14 +115,6 @@ export function UpdateConnection() {
                             <Card>
                                 <CardContent>
 
-                                    <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-name"
-                                        label="Connection ID"
-                                        value={connId}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => setConnId(e.target.value)} />
                                     <Typography variant="h5">Azure</Typography>
 
                                     <TextField
@@ -171,37 +197,40 @@ export function UpdateConnection() {
                                     <TextField
                                         sx={{ p: 1, m: 1 }}
                                         id="item-name"
-                                        label="Item Name"
-                                        value={itemName}
+                                        label="Bucket Name"
+                                        value={conn.gcp_connection.bucket_name}
                                         fullWidth
                                         variant="outlined"
-                                        onChange={(e) => setItemName(e.target.value)}
-                                    /> <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-name"
-                                        label="Item Name"
-                                        value={itemName}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => setItemName(e.target.value)}
-                                    /> <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-name"
-                                        label="Item Name"
-                                        value={itemName}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => setItemName(e.target.value)}
+                                        onChange={(e) => {
+                                            let tempConn = { ...conn };
+                                            tempConn.gcp_connection.bucket_name = e.target.value;
+                                            setConn(tempConn);
+                                        }}
                                     />
-
+                                    <TextField
+                                        sx={{ p: 1, m: 1 }}
+                                        id="item-name"
+                                        label="Connection Properties"
+                                        value={conn.gcp_connection.connection_json}
+                                        fullWidth
+                                        multiline
+                                        rows={4}
+                                        variant="outlined"
+                                        onChange={(e) => {
+                                            let tempConn = { ...conn };
+                                            tempConn.gcp_connection.connection_json = e.target.value;
+                                            setConn(tempConn);
+                                        }}
+                                    />
                                     <Button
                                         sx={{ p: 1, m: 1, ml: 2 }}
                                         variant="contained"
                                         onClick={async () => {
+                                            conn.gcp_connection.connection_json = JSON.parse(conn.gcp_connection.connection_json)
                                             setLoading(true);
                                             var config = {
                                                 method: 'patch',
-                                                url: `http://localhost:8000/api/v1/connections/${connId}/`,
+                                                url: `http://localhost:8000/api/v1/connections/2/`,
                                                 headers: {
                                                     'Authorization': authHeaders(),
                                                     'Content-Type': 'application/json'
@@ -210,7 +239,8 @@ export function UpdateConnection() {
                                             };
                                             try {
                                                 let data = await axios(config)
-                                                toast.success('Successfully updated connection', successToastConfig)
+                                                if (data.status === 200)
+                                                    toast.success('Successfully updated connection', successToastConfig)
                                             }
                                             catch (e) {
                                                 console.log(e);

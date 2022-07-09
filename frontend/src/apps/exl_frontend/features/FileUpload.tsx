@@ -52,7 +52,7 @@ export function FileUpload() {
                 <Grid container spacing={3} justifyContent="center">
                     <Grid item xs={12} sm={10} md={10}>
                         <Box sx={{ pt: 2 }}>
-                            <Button variant="text" component={RouterLink} to="/items/all">
+                            <Button variant="text" component={RouterLink} to="/files/all">
                                 <Icon icon={arrowFill} color="#46C084" height={30} />
                                 Back to Files
                             </Button>
@@ -91,6 +91,7 @@ export function FileUpload() {
                                         <MenuItem value={'Azure'}>Azure</MenuItem>
                                     </Select>
                                     <Button
+                                        sx={{ p: 1, ml: 1, mb: 3 }}
                                         variant="contained"
                                         component="label"
                                         onClick={async () => {

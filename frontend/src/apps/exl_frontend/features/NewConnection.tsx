@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Box,
     Button,
@@ -37,7 +37,11 @@ interface iConn {
         bucket_name: string;
         access_key: string;
         secret_key: string;
-    }
+    },
+    gcp_connection: {
+        bucket_name: string;
+        connection_json: string;
+    };
 }
 
 export function NewConnection() {
@@ -46,7 +50,7 @@ export function NewConnection() {
     const [_, { addItem }] = useItemStore();
     const [selectedFile, setSelectedFile] = useState<File>();
     const [loading, setLoading] = useState(false);
-    const [bucketType, setBucketType] = useState('Local');
+    const [connExists, setConnExists] = useState<boolean>(false);
     const [itemName, setItemName] = useState("");
     const [itemDescription, setItemDescription] = useState("");
     const [conn, setConn] = useState<iConn>({
@@ -59,16 +63,45 @@ export function NewConnection() {
             bucket_name: '',
             access_key: '',
             secret_key: '',
+        },
+        gcp_connection: {
+            bucket_name: '',
+            connection_json: ''
         }
     });
     console.log(conn)
+
+    const getDefaultConnection = async () => {
+        setConnExists(false);
+        const config = {
+            method: 'get',
+            url: 'http://localhost:8000/api/v1/connections/1',
+            headers: {
+                'Authorization': authHeaders(),
+            }
+        };
+
+        setLoading(true);
+        let conn = await axios(config);
+        if (!(conn.data.azure_connection && conn.data.s3_connection)) {
+            setConnExists(true);
+        }
+        console.log(conn.data);
+        setConn(conn.data);
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        getDefaultConnection();
+    }, [])
+
     return (
         <Page title="Item Details">
             <Container maxWidth="xl">
                 <Grid container spacing={3} justifyContent="center">
                     <Grid item xs={12} sm={10} md={10}>
                         <Box sx={{ pt: 2 }}>
-                            <Button variant="text" component={RouterLink} to="/items/all">
+                            <Button variant="text" component={RouterLink} to="/connections/new">
                                 <Icon icon={arrowFill} color="#46C084" height={30} />
                                 Back to Connections
                             </Button>
@@ -83,142 +116,150 @@ export function NewConnection() {
                         ) : (
                             <Card>
                                 <CardContent>
-                                    <Typography variant="h5">Azure</Typography>
+                                    {connExists ? <>
+                                        <Typography variant="h5">A user can have only 1 connection</Typography>
 
-                                    <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-name"
-                                        label="Account Name"
-                                        value={conn.azure_connection.account_name}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => {
-                                            let tempConn = { ...conn };
-                                            tempConn.azure_connection.account_name = e.target.value;
-                                            setConn(tempConn);
-                                        }}
-                                    /> <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-name"
-                                        label="Account Key"
-                                        value={conn.azure_connection.account_key}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => {
-                                            let tempConn = { ...conn };
-                                            tempConn.azure_connection.account_key = e.target.value;
-                                            setConn(tempConn);
-                                        }}
-                                    /> <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-name"
-                                        label="Container Name"
-                                        value={conn.azure_connection.container_name}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => {
-                                            let tempConn = { ...conn };
-                                            tempConn.azure_connection.container_name = e.target.value;
-                                            setConn(tempConn);
-                                        }}
-                                    />
-                                    <Typography variant="h5">AWS</Typography>
+                                    </> : <>
+                                        <Typography variant="h5">Azure</Typography>
 
-                                    <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-name"
-                                        label="Bucket Name"
-                                        value={conn.s3_connection.bucket_name}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => {
-                                            let tempConn = { ...conn };
-                                            tempConn.s3_connection.bucket_name = e.target.value;
-                                            setConn(tempConn);
-                                        }}
-                                    /> <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-name"
-                                        label="Secret Key"
-                                        value={conn.s3_connection.secret_key}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => {
-                                            let tempConn = { ...conn };
-                                            tempConn.s3_connection.secret_key = e.target.value;
-                                            setConn(tempConn);
-                                        }}
-                                    /> <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-name"
-                                        label="Access Key"
-                                        value={conn.s3_connection.access_key}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => {
-                                            let tempConn = { ...conn };
-                                            tempConn.s3_connection.access_key = e.target.value;
-                                            setConn(tempConn);
-                                        }}
-                                    />
-                                    <Typography variant="h5">GCP</Typography>
-                                    <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-name"
-                                        label="Item Name"
-                                        value={itemName}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => setItemName(e.target.value)}
-                                    /> <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-name"
-                                        label="Item Name"
-                                        value={itemName}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => setItemName(e.target.value)}
-                                    /> <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-name"
-                                        label="Item Name"
-                                        value={itemName}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => setItemName(e.target.value)}
-                                    />
+                                        <TextField
+                                            sx={{ p: 1, m: 1 }}
+                                            id="item-name"
+                                            label="Account Name"
+                                            value={conn.azure_connection.account_name}
+                                            fullWidth
+                                            variant="outlined"
+                                            onChange={(e) => {
+                                                let tempConn = { ...conn };
+                                                tempConn.azure_connection.account_name = e.target.value;
+                                                setConn(tempConn);
+                                            }}
+                                        /> <TextField
+                                            sx={{ p: 1, m: 1 }}
+                                            id="item-name"
+                                            label="Account Key"
+                                            value={conn.azure_connection.account_key}
+                                            fullWidth
+                                            variant="outlined"
+                                            onChange={(e) => {
+                                                let tempConn = { ...conn };
+                                                tempConn.azure_connection.account_key = e.target.value;
+                                                setConn(tempConn);
+                                            }}
+                                        /> <TextField
+                                            sx={{ p: 1, m: 1 }}
+                                            id="item-name"
+                                            label="Container Name"
+                                            value={conn.azure_connection.container_name}
+                                            fullWidth
+                                            variant="outlined"
+                                            onChange={(e) => {
+                                                let tempConn = { ...conn };
+                                                tempConn.azure_connection.container_name = e.target.value;
+                                                setConn(tempConn);
+                                            }}
+                                        />
+                                        <Typography variant="h5">AWS</Typography>
 
-                                    <Button
-                                        sx={{ p: 1, m: 1, ml: 2 }}
-                                        variant="contained"
-                                        onClick={async () => {
-                                            setLoading(true);
-                                            var config = {
-                                                method: 'post',
-                                                url: 'http://localhost:8000/api/v1/connections/',
-                                                headers: {
-                                                    'Authorization': authHeaders(),
-                                                    'Content-Type': 'application/json'
-                                                },
-                                                data: conn
-                                            };
-                                            try {
-                                                let data = await axios(config)
-                                                toast.success('Connection created successfully', successToastConfig)
+                                        <TextField
+                                            sx={{ p: 1, m: 1 }}
+                                            id="item-name"
+                                            label="Bucket Name"
+                                            value={conn.s3_connection.bucket_name}
+                                            fullWidth
+                                            variant="outlined"
+                                            onChange={(e) => {
+                                                let tempConn = { ...conn };
+                                                tempConn.s3_connection.bucket_name = e.target.value;
+                                                setConn(tempConn);
+                                            }}
+                                        /> <TextField
+                                            sx={{ p: 1, m: 1 }}
+                                            id="item-name"
+                                            label="Secret Key"
+                                            value={conn.s3_connection.secret_key}
+                                            fullWidth
+                                            variant="outlined"
+                                            onChange={(e) => {
+                                                let tempConn = { ...conn };
+                                                tempConn.s3_connection.secret_key = e.target.value;
+                                                setConn(tempConn);
+                                            }}
+                                        /> <TextField
+                                            sx={{ p: 1, m: 1 }}
+                                            id="item-name"
+                                            label="Access Key"
+                                            value={conn.s3_connection.access_key}
+                                            fullWidth
+                                            variant="outlined"
+                                            onChange={(e) => {
+                                                let tempConn = { ...conn };
+                                                tempConn.s3_connection.access_key = e.target.value;
+                                                setConn(tempConn);
+                                            }}
+                                        />
+                                        <Typography variant="h5">GCP</Typography>
+                                                <TextField
+                                                    sx={{ p: 1, m: 1 }}
+                                                    id="item-name"
+                                                    label="Bucket Name"
+                                                    value={conn.gcp_connection.bucket_name}
+                                                    fullWidth
+                                                    variant="outlined"
+                                                    onChange={(e) => {
+                                                        let tempConn = { ...conn };
+                                                        tempConn.gcp_connection.bucket_name = e.target.value;
+                                                        setConn(tempConn);
+                                                    }}
+                                                />
+                                                <TextField
+                                                    sx={{ p: 1, m: 1 }}
+                                                    id="item-name"
+                                                    label="Connection Properties"
+                                                    value={conn.gcp_connection.connection_json}
+                                                    fullWidth
+                                                    multiline
+                                                    rows={4}
+                                                    variant="outlined"
+                                                    onChange={(e) => {
+                                                        let tempConn = { ...conn };
+                                                        tempConn.gcp_connection.connection_json = e.target.value;
+                                                        setConn(tempConn);
+                                                    }}
+                                                />
 
-                                            }
-                                            catch (e) {
-                                                console.log(e);
-                                                toast.error('Connection already exists', errorToastConfig)
-                                            }
-                                            finally {
-                                                setLoading(false);
-                                            }
-                                            // navigate("/items/all");
-                                        }}
-                                    >
-                                        {loading ? <CircularProgress /> : "Save"}
-                                    </Button>
+                                        <Button
+                                            sx={{ p: 1, m: 1, ml: 2 }}
+                                            variant="contained"
+                                            onClick={async () => {
+                                                setLoading(true);
+                                                var config = {
+                                                    method: 'post',
+                                                    url: 'http://localhost:8000/api/v1/connections/',
+                                                    headers: {
+                                                        'Authorization': authHeaders(),
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    data: conn
+                                                };
+                                                try {
+                                                    let data = await axios(config)
+                                                    toast.success('Connection created successfully', successToastConfig)
+
+                                                }
+                                                catch (e) {
+                                                    console.log(e);
+                                                    toast.error('Connection already exists', errorToastConfig)
+                                                }
+                                                finally {
+                                                    setLoading(false);
+                                                }
+                                                // navigate("/items/all");
+                                            }}
+                                        >
+                                            {loading ? <CircularProgress /> : "Save"}
+                                        </Button>
+                                    </>}
                                 </CardContent>
                             </Card>
                         )}
