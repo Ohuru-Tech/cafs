@@ -5,6 +5,7 @@ import {
   fetchAllFiles,
   deleteFile,
 } from "apps/exl_frontend/actions/fileActions";
+import { deleteConnection } from "apps/exl_frontend/actions/connectionActions";
 
 defaults.devtools = true;
 
@@ -29,6 +30,7 @@ const Store = createStore({
   actions: {
     fetchAllFiles,
     deleteFile,
+    deleteConnection,
   },
 });
 
