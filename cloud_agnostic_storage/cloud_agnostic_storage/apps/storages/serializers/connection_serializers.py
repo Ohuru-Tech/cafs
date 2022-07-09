@@ -81,31 +81,54 @@ class CloudConnectionSerializer(serializers.ModelSerializer):
         gcp_connection_data = validated_data.pop("gcp_connection", None)
 
         if azure_connection_data:
-            serializer = AzureConnectionSerializer(
-                instance=instance.azure_connection,
-                data=azure_connection_data,
-                partial=True,
-            )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
+            if instance.azure_connection:
+                serializer = AzureConnectionSerializer(
+                    instance=instance.azure_connection,
+                    data=azure_connection_data,
+                    partial=True,
+                )
+
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+            else:
+
+                serializer = AzureConnectionSerializer(
+                    data=azure_connection_data,
+                )
+                serializer.is_valid(raise_exception=True)
+                instance.azure_connection = serializer.save()
 
         if s3_connection_data:
-            serializer = S3ConnectionSerializer(
-                instance=instance.s3_connection,
-                data=s3_connection_data,
-                partial=True,
-            )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
+            if instance.s3_connection:
+                serializer = S3ConnectionSerializer(
+                    instance=instance.s3_connection,
+                    data=s3_connection_data,
+                    partial=True,
+                )
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+            else:
+                serializer = S3ConnectionSerializer(
+                    data=s3_connection_data,
+                )
+                serializer.is_valid(raise_exception=True)
+                instance.s3_connection = serializer.save()
 
         if gcp_connection_data:
-            serializer = GCloudConnectionSerializer(
-                instance=instance.gcp_connection,
-                data=gcp_connection_data,
-                partial=True,
-            )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
+            if instance.gcp_connection:
+                serializer = GCloudConnectionSerializer(
+                    instance=instance.gcp_connection,
+                    data=gcp_connection_data,
+                    partial=True,
+                )
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+            else:
+                serializer = GCloudConnectionSerializer(
+                    data=gcp_connection_data,
+                )
+                serializer.is_valid(raise_exception=True)
+                instance.gcp_connection = serializer.save()
 
         return super().update(instance, validated_data)
 
