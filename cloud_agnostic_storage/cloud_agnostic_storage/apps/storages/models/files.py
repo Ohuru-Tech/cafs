@@ -36,7 +36,7 @@ class File(models.Model):
     access_url = models.URLField(blank=True, null=True)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
 
-    def save(self, *args, **kwargs):
+    def _initialize_storage_instance(self):
         if self.file_s3:
             try:
                 aws_connection_details = self.user.connection.s3_connection
@@ -73,4 +73,11 @@ class File(models.Model):
                 self.access_url = self.file_gcloud.url
             except (GCloudConnection.DoesNotExist, AttributeError):
                 pass
+
+    def save(self, *args, **kwargs):
+        self._initialize_storage_instance()
         return super().save(*args, **kwargs)
+
+    def delete(self, using=None, keep_parents=False):
+        self._initialize_storage_instance()
+        return super().delete(using, keep_parents)
