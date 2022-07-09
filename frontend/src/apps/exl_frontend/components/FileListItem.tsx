@@ -9,22 +9,24 @@ interface FileListItemProps {
     file: File;
 }
 
+function getFileLink(file: File) {
+    return file.file_azure || file.file_s3 || file.file_gcloud || file.file;
+}
+
 export default function ApplicationListItem({ file }: FileListItemProps) {
     const navigate = useNavigate();
     return (
         <Card sx={{ p: 1, mb: 2, mt: 2 }}>
 
-            {/* <CardActionArea
-                // onClick={() => {
-                //     navigate(`/items/${item?.id}`);
-                // }}
+            <CardActionArea
+                onClick={() => {
+                    // navigate(`/items/${item?.id}`);
+                    window.open(getFileLink(file));
+                }}
             >
-                <CardHeader title={file.id} sx={{ color: "#46C084" }} />
-            </CardActionArea> */}
-            <Box sx={{ p: 3, pb: 2 }} dir="ltr">
-                <Stack spacing={3}>{ file.file_s3 }</Stack>
-                {/* <Typography variant="subtitle1">{file.file_s3}</Typography> */}
-            </Box>
+                <CardHeader title={`file: ${file.id} user:${file.user}`} sx={{ color: "#46C084" }} />
+            </CardActionArea>
+            
         </Card>
     );
 }

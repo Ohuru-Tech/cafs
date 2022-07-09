@@ -1,7 +1,10 @@
 import { defaults, createStore, createHook } from "react-sweet-state";
 
 import { fileState } from "apps/exl_frontend/models/state";
-import { fetchAllFiles, deleteFile } from "apps/exl_frontend/actions/fileActions";
+import {
+  fetchAllFiles,
+  deleteFile,
+} from "apps/exl_frontend/actions/fileActions";
 
 defaults.devtools = true;
 
@@ -25,7 +28,7 @@ const Store = createStore({
   initialState: loadInitialState(),
   actions: {
     fetchAllFiles,
-    deleteFile
+    deleteFile,
   },
 });
 

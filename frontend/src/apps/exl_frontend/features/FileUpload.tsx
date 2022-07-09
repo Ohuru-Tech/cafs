@@ -22,7 +22,7 @@ import { Icon } from "@iconify/react";
 import arrowFill from "@iconify/icons-eva/arrow-back-fill";
 //
 import Page from "apps/common/components/Page";
-import useItemStore from "apps/exl_frontend/stores/itemsStore";
+import useFileStore from "apps/exl_frontend/stores/fileStore";
 
 function getUploadType(bucketType: string) {
     switch (bucketType) {
@@ -40,13 +40,10 @@ function getUploadType(bucketType: string) {
 export function FileUpload() {
     const navigate = useNavigate();
 
-    const [_, { addItem }] = useItemStore();
+    const [{ }, {  }] = useFileStore();
     const [selectedFile, setSelectedFile] = useState<File>();
     const [loading, setLoading] = useState(false);
     const [bucketType, setBucketType] = useState('Local');
-    const [itemName, setItemName] = useState("");
-    const [itemDescription, setItemDescription] = useState("");
-    let fileData;
 
     return (
         <Page title="Item Details">
@@ -69,43 +66,13 @@ export function FileUpload() {
                         ) : (
                             <Card>
                                 <CardContent>
-                                    {/* <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-name"
-                                        label="Item Name"
-                                        value={itemName}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => setItemName(e.target.value)}
-                                    />
-                                    <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="item-description"
-                                        label="Item Description"
-                                        value={itemDescription}
-                                        multiline
-                                        rows={4}
-                                        fullWidth
-                                        variant="outlined"
-                                        onChange={(e) => setItemDescription(e.target.value)}
-                                    /> */}
                                     <Button
                                         variant="contained"
                                         component="label"
                                     >
                                         Select File
                                         <input type="file" hidden
-                                            onChange={(event) => {
-                                                setSelectedFile(event.target.files![0])
-
-                                                // let reader = new FileReader();
-                                                // reader.readAsArrayBuffer(event.target.files![0]);
-                                                // reader.addEventListener('load', (e) => {
-                                                //     fileData = e.target!.result;
-                                                //     console.log(fileData)
-                                                // });
-
-                                            }}
+                                            onChange={(event) => setSelectedFile(event.target.files![0])}
                                         />
                                     </Button>
                                     <Typography sx={{ p: 1, m: 1 }} variant="subtitle1" component='span'>{selectedFile?.name}</Typography>
@@ -125,7 +92,7 @@ export function FileUpload() {
                                     <Button
                                         variant="contained"
                                         component="label"
-                                        onClick={() => {
+                                        onClick={async () => {
 
                                             const myFormData = new FormData();
                                             myFormData.append(`file_${getUploadType(bucketType)}`, selectedFile as Blob, selectedFile!.name)
@@ -135,7 +102,7 @@ export function FileUpload() {
                                                 url: 'http://localhost:8000/api/v1/files/',
                                                 headers: {
                                                     'Authorization': authHeaders(),
-                                                    
+
                                                     'Content-Type': 'multipart/form-data'
                                                 },
                                                 data: myFormData
@@ -147,24 +114,8 @@ export function FileUpload() {
                                                 .catch(function (error) {
                                                     console.log(error);
                                                 });
-
                                         }}
                                     >Upload</Button>
-                                    {/* <Button
-                                        sx={{ p: 1, m: 1, ml: 2 }}
-                                        variant="contained"
-                                        onClick={async () => {
-                                            setLoading(true);
-                                            await addItem({
-                                                name: itemName,
-                                                description: itemDescription,
-                                            });
-                                            setLoading(false);
-                                            navigate("/items/all");
-                                        }}
-                                    >
-                                        {loading ? <CircularProgress /> : "Save"}
-                                    </Button> */}
                                 </CardContent>
                             </Card>
                         )}

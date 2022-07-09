@@ -56,7 +56,7 @@ export function DeleteConnection() {
                         <Box sx={{ pt: 2 }}>
                             <Button variant="text" component={RouterLink} to="/items/all">
                                 <Icon icon={arrowFill} color="#46C084" height={30} />
-                                Back to Files
+                                Back to Connections
                             </Button>
                         </Box>
                         <Box sx={{ pt: 2, pl: 1 }}>
