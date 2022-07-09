@@ -56,7 +56,7 @@ export function UpdateConnection() {
                         <Box sx={{ pt: 2 }}>
                             <Button variant="text" component={RouterLink} to="/items/all">
                                 <Icon icon={arrowFill} color="#46C084" height={30} />
-                                Back to Files
+                                Back to Connections
                             </Button>
                         </Box>
                         <Box sx={{ pt: 2, pl: 1 }}>
@@ -69,7 +69,7 @@ export function UpdateConnection() {
                         ) : (
                             <Card>
                                 <CardContent>
-                                    {/* <TextField
+                                    <TextField
                                         sx={{ p: 1, m: 1 }}
                                         id="item-name"
                                         label="Item Name"
@@ -88,24 +88,14 @@ export function UpdateConnection() {
                                         fullWidth
                                         variant="outlined"
                                         onChange={(e) => setItemDescription(e.target.value)}
-                                    /> */}
+                                    />
                                     <Button
                                         variant="contained"
                                         component="label"
                                     >
                                         Select File
                                         <input type="file" hidden
-                                            onChange={(event) => {
-                                                setSelectedFile(event.target.files![0])
-
-                                                // let reader = new FileReader();
-                                                // reader.readAsArrayBuffer(event.target.files![0]);
-                                                // reader.addEventListener('load', (e) => {
-                                                //     fileData = e.target!.result;
-                                                //     console.log(fileData)
-                                                // });
-
-                                            }}
+                                            onChange={(event) => setSelectedFile(event.target.files![0])}
                                         />
                                     </Button>
                                     <Typography sx={{ p: 1, m: 1 }} variant="subtitle1" component='span'>{selectedFile?.name}</Typography>
