@@ -63,8 +63,8 @@ class File(models.Model):
                 pass
         if self.file_gcloud:
             try:
-                gcloud_connection_details = self.user.gcp_connection
-                self.file_gcloud.storage = GCloudConnection(
+                gcloud_connection_details = self.user.connection.gcp_connection
+                self.file_gcloud.storage = GoogleCloudStorage(
                     bucket_name=gcloud_connection_details.bucket_name,
                     credentials=service_account.Credentials.from_service_account_info(
                         gcloud_connection_details.connection_json
