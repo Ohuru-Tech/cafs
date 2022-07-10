@@ -30,7 +30,7 @@ declare module "axios" {
 }
 
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL || "http://localhost:8000/api/",
+  baseURL: process.env.REACT_APP_BASE_URL || "https://clafs.herokuapp.com/api/",
   responseType: "json",
   headers: {
     "Content-Type": "application/json",

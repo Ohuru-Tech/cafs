@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from uritemplate import partial
 
 from cloud_agnostic_storage.apps.storages.models.connection import (
     AzureConnection,
