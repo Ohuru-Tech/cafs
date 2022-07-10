@@ -7,7 +7,7 @@
 | Backend                                                                      | Frontend                                                                    |
 |------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
 | Clone the project <br > ```git clone https://github.com/Ohuru-Tech/cafs.git``` | Clone the project <br> ```git clone https://github.com/Ohuru-Tech/cafs.git ``` |
-| Go to the project directory <br> ```cd cafs/cloud_agnostic_storage ```      | Go to the project directory <br> ```cd cafs/cloud_agnostic_storage  ```    |
+| Go to the project directory <br> ```cd cafs/cloud_agnostic_storage ```      | Go to the project directory <br> ```cd cafs/frontend  ```    |
 | Install Dependencies <br> ``` pip3 install -r requirements.txt ```           | Install Dependencies <br>  ``` yarn install ```                              |
 | Start the server  <br> ```python3 manage.py runserver ```                    | Start the server <br> ``` yarn start ```                                    |
 
