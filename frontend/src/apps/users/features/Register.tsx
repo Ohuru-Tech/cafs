@@ -60,10 +60,7 @@ export function Register() {
           <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
             Easily upload your files to any cloud provider
           </Typography>
-          <img
-            alt="register"
-            src="/create.png"
-          />
+          <img alt="register" src="/create.png" />
         </SectionStyle>
       </MHidden>
 

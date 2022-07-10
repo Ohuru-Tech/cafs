@@ -13,7 +13,6 @@ const FILE_API_BASE = "connections";
 
 const FileAPIs = (itemId?: number) => {
   return {
-    
     deleteConn: (fileId: number) =>
       axios.get(
         `v1/${FILE_API_BASE}/${fileId}/`,
