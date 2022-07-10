@@ -59,7 +59,7 @@ class FileViewSet(
     }
 
     def get_queryset(self):
-        return File.objects.order_by("-id")
+        return File.objects.order_by("-id").filter(user=self.request.user)
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
