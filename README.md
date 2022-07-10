@@ -136,3 +136,11 @@ The project frontend has been deployed on [https://exl-hack.surge.sh/](https://e
 <hr>
 
 ![fileList](./assets/fileList.png)
+
+<hr>
+
+![fileList](./assets/redoc.png)
+
+<hr>
+
+![fileList](./assets/swagger.png)
