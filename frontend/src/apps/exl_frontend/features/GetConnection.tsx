@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Button,
@@ -94,16 +94,36 @@ export function GetConnection() {
         }
     });
 
+    const getDefaultConnection = async () => {
+        const config = {
+            method: 'get',
+            url: 'http://localhost:8000/api/v1/connections/1',
+            headers: {
+                'Authorization': authHeaders(),
+            }
+        };
+
+        setLoading(true);
+        let conn = await axios(config);
+        console.log(conn.data);
+        setConn(conn.data);
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        getDefaultConnection()
+    }, [])
+
     return (
         <Page title="Item Details">
             <Container maxWidth="xl">
                 <Grid container spacing={3} justifyContent="center">
                     <Grid item xs={12} sm={10} md={10}>
                         <Box sx={{ pt: 2 }}>
-                            <Button variant="text" component={RouterLink} to="/items/all">
+                            {/* <Button variant="text" component={RouterLink} to="/connections/">
                                 <Icon icon={arrowFill} color="#46C084" height={30} />
-                                Back to Files
-                            </Button>
+                                Back to Connections
+                            </Button> */}
                         </Box>
                         <Box sx={{ pt: 2, pl: 1 }}>
                             <Typography variant="h4">Get Connection</Typography>
@@ -115,42 +135,6 @@ export function GetConnection() {
                         ) : (
                             <Card>
                                 <CardContent>
-                                    <TextField
-                                        sx={{ p: 1, m: 1 }}
-                                        id="connection-id"
-                                        label="Connection ID"
-                                        value={connid}
-                                        variant="outlined"
-                                        onChange={(e) => setConnId(e.target.value)}
-                                    />
-
-                                    <Button
-                                        sx={{ p: 1, m: 1, ml: 2 }}
-                                        variant="contained"
-                                        onClick={async () => {
-
-                                            const config = {
-                                                method: 'get',
-                                                url: `http://localhost:8000/api/v1/connections/${connid}`,
-                                                headers: {
-                                                    'Authorization': authHeaders(),
-                                                }
-                                            };
-
-                                            setLoading(true);
-                                            let conn = await axios(config);
-                                            console.log(conn.data);
-                                            setConn(conn.data);
-                                            // await addItem({
-                                            //     name: itemName,
-                                            //     description: itemDescription,
-                                            // });
-                                            setLoading(false);
-                                            // navigate("/items/all");
-                                        }}
-                                    >
-                                        {loading ? <CircularProgress /> : "Get"}
-                                    </Button>
                                     {conn && (
                                         <Box sx={{ pt: 2, pl: 1 }}>
                                             <Accordion sx={{ pt: 2, pl: 1 }}>

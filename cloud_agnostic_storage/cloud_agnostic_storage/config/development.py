@@ -3,6 +3,8 @@ from .environment import env
 
 
 class Dev(Common):
+    ALLOWED_HOSTS = ["*"]
+
     INSTALLED_APPS = Common.INSTALLED_APPS
     MIDDLEWARE = Common.MIDDLEWARE
 

@@ -23,18 +23,18 @@ const sidebarConfig: iSidebarConfig[] = [
         title: "New connection",
         path: "/connections/new"
       },
-      {
-        title: "Get connection",
-        path: "/connections/get"
-      },
+      // {
+      //   title: "Get connection",
+      //   path: "/connections/get"
+      // },
       {
         title: "Update connection",
         path: "/connections/update"
       },
-      {
-        title: "Delete connection",
-        path: "/connections/delete"
-      }
+      // {
+      //   title: "Delete connection",
+      //   path: "/connections/delete"
+      // }
     ],
     icon: getIcon(layersFill),
 
@@ -51,10 +51,7 @@ const sidebarConfig: iSidebarConfig[] = [
         title: "List Files",
         path: "/files/all"
       },
-      {
-        title: "Delete File",
-        path: "/files/delete"
-      }
+
     ],
     icon: getIcon(layersFill),
   },
