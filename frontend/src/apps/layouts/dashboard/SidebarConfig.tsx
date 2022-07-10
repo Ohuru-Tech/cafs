@@ -10,7 +10,7 @@ const getIcon = (name: IconifyIcon) => (
 interface iSidebarConfig {
   title: string;
   path: string;
-  children: Array<{ title: string; path: string; }>;
+  children: Array<{ title: string; path: string }>;
   icon: JSX.Element;
 }
 
@@ -21,7 +21,7 @@ const sidebarConfig: iSidebarConfig[] = [
     children: [
       {
         title: "New connection",
-        path: "/connections/new"
+        path: "/connections/new",
       },
       // {
       //   title: "Get connection",
@@ -29,7 +29,7 @@ const sidebarConfig: iSidebarConfig[] = [
       // },
       {
         title: "Update connection",
-        path: "/connections/update"
+        path: "/connections/update",
       },
       // {
       //   title: "Delete connection",
@@ -37,7 +37,6 @@ const sidebarConfig: iSidebarConfig[] = [
       // }
     ],
     icon: getIcon(layersFill),
-
   },
   {
     title: "Files",
@@ -49,9 +48,8 @@ const sidebarConfig: iSidebarConfig[] = [
       },
       {
         title: "List Files",
-        path: "/files/all"
+        path: "/files/all",
       },
-
     ],
     icon: getIcon(layersFill),
   },

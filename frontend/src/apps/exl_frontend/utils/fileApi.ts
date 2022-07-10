@@ -32,7 +32,7 @@ const FileAPIs = (itemId?: number) => {
       axios.delete(
         `v1/${FILE_API_BASE}/${fileId}/`,
         authenticatedSnakeAndCamelCase
-      )
+      ),
   };
 };
 
