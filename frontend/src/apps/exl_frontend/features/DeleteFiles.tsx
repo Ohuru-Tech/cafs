@@ -22,6 +22,8 @@ import arrowFill from "@iconify/icons-eva/arrow-back-fill";
 //
 import Page from "apps/common/components/Page";
 import useFileStore from "apps/exl_frontend/stores/fileStore";
+import { toast } from "react-toastify";
+import { successToastConfig } from "apps/common/utils/general/configs";
 
 
 
@@ -32,16 +34,13 @@ export function DeleteFile() {
     const [loading, setLoading] = useState(false);
 
     const [fileId, setFileId] = useState<number>(0);
-    const [itemDescription, setItemDescription] = useState("");
-    let fileData;
-
     return (
         <Page title="Item Details">
             <Container maxWidth="xl">
                 <Grid container spacing={3} justifyContent="center">
                     <Grid item xs={12} sm={10} md={10}>
                         <Box sx={{ pt: 2 }}>
-                            <Button variant="text" component={RouterLink} to="/items/all">
+                            <Button variant="text" component={RouterLink} to="/files/upload">
                                 <Icon icon={arrowFill} color="#46C084" height={30} />
                                 Back to Files
                             </Button>
@@ -71,9 +70,16 @@ export function DeleteFile() {
                                         variant="contained"
                                         onClick={async () => {
                                             setLoading(true);
-                                            await deleteFile(fileId);
-                                            setLoading(false);
-                                            navigate("/files/delete");
+                                            try {
+                                                await deleteFile(fileId);
+                                                navigate("/files/delete");
+                                            }
+                                            catch (e) {
+                                                toast("Error deleting file", successToastConfig)
+                                            }
+                                            finally {
+                                                setLoading(false);
+                                            }
                                         }}
                                     >
                                         {loading ? <CircularProgress /> : "Delete"}
